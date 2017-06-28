@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>测试</title>
+		<style>
+			#canvas{
+				
+				border:1px solid #000;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" width="500px" height="500px"></canvas>
+		<script>
+			var canvas = document.getElementById("canvas");
+			var ctx = canvas.getContext('2d');
+			ctx.beginPath();
+		    ctx.arc(75,75,50,0,Math.PI*2,true); // 绘制
+//		    ctx.moveTo(110,75);
+		    ctx.arc(75,75,35,0,Math.PI,false);   // 口(顺时针)
+//		    ctx.moveTo(65,65);
+		    ctx.arc(60,65,5,0,Math.PI*2,true);  // 左眼
+//		    ctx.moveTo(95,65);
+		    ctx.arc(90,65,5,0,Math.PI*2,true);  // 右眼
+		    ctx.stroke();
+		    
+		    // 填充三角形
+		    ctx.beginPath();
+		    ctx.moveTo(200,50);
+		    ctx.lineTo(250,150);
+		    ctx.lineTo(300,50);
+		    ctx.fill();
+		
+		    // 描边三角形
+		    ctx.beginPath();
+		    ctx.moveTo(125,125);
+		    ctx.lineTo(125,45);
+		    ctx.lineTo(45,125);
+		    ctx.closePath();
+		    ctx.stroke();
+		</script>
+	</body>
+</html>
