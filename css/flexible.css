@@ -1,0 +1,18 @@
+p {
+  height: 0.4rem;
+  line-height: 0.4rem;
+  background-color: pink;
+  padding-left: 0.266667rem;
+}
+
+p {
+  font-size: 0.16rem;
+}
+
+[data-dpr="2"] p {
+  font-size: 0.32rem;
+}
+
+[data-dpr="3"] p {
+  font-size: 0.48rem;
+}

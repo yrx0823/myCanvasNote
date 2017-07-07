@@ -1,0 +1,33 @@
+{
+  "name": "yrx-learning",
+  "version": "1.0.0",
+  "description": "\"\"\u001b[Dtext\u001b[F\u001b[F\u001b[B\u001b[B\u001b[F\u001b[B\u001b[B\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[C\u001b[s\u001b[C\"",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "browser-sync": "^2.18.12",
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "gulp-postcss": "^7.0.0",
+    "gulp-sass": "^3.1.0",
+    "postcss-center": "^1.0.0",
+    "postcss-clearfix": "^1.0.0",
+    "postcss-crip": "^2.0.1",
+    "postcss-px2rem": "^0.3.0",
+    "px2rem": "^0.5.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yrx0823/myCanvasNote.git"
+  },
+  "author": "yangruxue",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yrx0823/myCanvasNote/issues"
+  },
+  "homepage": "https://github.com/yrx0823/myCanvasNote#readme"
+}

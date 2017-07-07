@@ -1,0 +1,10 @@
+@import 'global.scss';
+p {
+  height: 30px;
+  line-height: 30px;
+  background-color: pink;
+  padding-left: 20px;
+}
+p{
+    @include font-dpr(12px);
+}
