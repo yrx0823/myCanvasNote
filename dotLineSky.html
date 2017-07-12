@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>点线星空</title>
+	</head>
+	<body>
+		<canvas id="canvas"></canvas>
+    	<script>
+    		//canvas初始化
+    		var canvas = document.getElementById("canvas");
+    		canvas.width = 500;
+    		canvas.height = 500;
+    		canvas.style.backgroundColor = "#000";
+    		//ctx对象
+    		ctx = canvas.getContext("2d");
+      		ctx.lineWidth = .5;
+    		//定义默认中心点
+    		var center = {
+    			x:canvas.width / 2,
+    			y:canvas.height / 2
+    		}
+    		//很多小点对象
+    		var dots = {
+    			num:100,  //圆点数量
+    			distance:50,	//圆点的最远距离
+    			d_radius:50,	//连接的最大半径
+    			d_arr:[]  //储存圆点
+    		}
+    		//随机颜色
+    		class Rgba{
+    			constructor(){
+    				this.r = this.colorValue();
+    				this.g = this.colorValue();
+    				this.b = this.colorValue();
+    				this.a = .8;
+    				this.rgba = `rgba(${this.r},${this.g},${this.b},${this.a})`;
+    			}
+    			colorValue(min){
+    				return Math.floor(Math.random() * 256);
+    			}
+    		}
+    		//简单的混合颜色
+    		mixColor = (dot1,dot2) =>{
+    			let color1 = dot1.color;
+    			let color2 = dot2.color;
+    			let r = mixRgb(color1.r,color2.r);
+    			let g = mixRgb(color1.r,color2.r);
+    			let b = mixRgb(color1.r,color2.r);
+    			return `rgba(${r},${g},${b},.5)`;
+    		}
+    		mixRgb = (c1,c2) =>{
+    			return (c1+c2)/2;
+    		}
+    		//小点
+    		class Dot{
+    			constructor(){
+    				//初始位置
+	    			this.x = Math.random() * canvas.width;
+	    			this.y = Math.random() * canvas.height;
+	    			//速度
+	    			this.vx = -.5 + Math.random();
+	    			this.vy = -.5 + Math.random();
+	    			//半径
+	    			this.radius = Math.random() * 2;
+	    			//颜色
+	    			this.color = new Rgba();	
+    			}
+    			//绘制
+    			draw(){
+    				ctx.beginPath();
+    				ctx.fillStyle = this.color.rgba;
+    				ctx.arc(this.x,this.y,this.radius,0,Math.PI * 2,false);
+    				ctx.fill();
+    			}
+    		}
+    		//生成小点
+    		creatDots = ()=>{
+    			for(let i= 0; i<dots.num; i++){
+    				dots.d_arr.push(new Dot());
+    			}
+    		}
+    		//绘制
+    		drawDots = ()=>{
+    			for(let i = 0;i < dots.num; i++){
+    				let dot = dots.d_arr[i];
+    				dot.draw();
+    			}
+    		}
+    		//移动
+    		moveDots = () =>{
+    			for(let i = 0;i < dots.num; i++){
+    				let dot = dots.d_arr[i];
+    				//碰到边界速度取反
+    				if(dot.x < 0 || dot.x > canvas.width){
+    					dot.vx = - dot.vx;
+    				}
+    				if(dot.y < 0 || dot.y > canvas.height){
+    					dot.vy = - dot.vy;
+    				}
+    				dot.x = dot.x + dot.vx;
+    				dot.y = dot.y + dot.vy;
+    			}
+    		}
+    		//连接小点
+    		connectDots = () =>{
+    			//把所有的小点之间作比较小于dots.distance,并且两点距离center对象位置都在dots.d_radius值之内则链接两点
+    			for(let i = 0; i < dots.num; i++){
+    				for(let j = 0; j<dots.num; j++){
+    					let i_dot = dots.d_arr[i];
+    					let j_dot = dots.d_arr[j];
+    					let x_distance = Math.abs(i_dot.x - j_dot.x);
+    					let y_distance = Math.abs(i_dot.y - j_dot.y);
+    					let x_radius = Math.abs(i_dot.x - center.x);
+    					let y_radius = Math.abs(i_dot.y - center.y);
+	  					if(x_distance < dots.distance && y_distance < dots.distance ){
+	  						if(x_radius < dots.d_radius && y_radius < dots.d_radius){
+	    							ctx.beginPath();
+	    							ctx.strokeStyle = mixColor(i_dot,j_dot);
+	    							ctx.moveTo(i_dot.x,i_dot.y);
+	    							ctx.lineTo(j_dot.x,j_dot.y);
+	    							ctx.stroke();
+	    							ctx.closePath();
+	  						}
+	  					}
+    				}
+    			}
+    		}
+    		//鼠标事件
+    		canvas.onmousemove = function(e){
+    			center.x = e.pageX;
+    			center.y = e.pageY;
+    		}
+    		canvas.onmouseleave = function(){
+    			center.x = canvas.width / 2;
+    			center.y = canvas.height / 2;
+    		}
+    		//动画
+    		animateDots = () =>{
+    			ctx.clearRect(0,0,canvas.width,canvas.height);
+    			drawDots();
+    			moveDots();
+    			connectDots();
+    			requestAnimationFrame(animateDots);
+    		}
+    		creatDots();
+    		animateDots();
+    	</script>
+	
+	</body>
+</html>
