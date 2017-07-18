@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>琴弦文字</title>
+		<script src="js/jquery-2.2.4.min.js"></script>
+	</head>
+	<body>
+		<p>琴弦文字琴弦文字琴弦文字琴弦文字琴弦文字</p>
+		<p>琴弦文字琴弦文字琴弦文字琴弦文字琴弦文字</p>
+		<script type="text/javascript">
+			$(function(){
+				var $ele = $("p:first-child");console.log($ele);
+				function fillSpan(){
+					var content = [
+						"<span>",[].join.call($ele.html(),"</span><span>"),"</span>"
+					]
+					console.log(content);
+				}
+				fillSpan();
+			});
+		</script>
+	</body>
+</html>

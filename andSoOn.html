@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>queue</title>
+		<style>
+			#birld{
+				width:50px;
+				height:50px;
+				background:#000;
+				position: absolute;
+			}
+		</style>
+		<script src="js/jquery-2.2.4.min.js"></script>
+	</head>
+	<body>
+		<div id="birld"></div>
+		
+		<script>var ele = $({});
+			for(var i = 0; i < 10; i++) {
+				ele.queue("xs", function(next) {
+					console.log(+new Date);
+					next();
+				}).delay(1000, "xs");
+			}
+			//ele.dequeue("xs");//当通过 .queue() 添加函数时，我们应当确保最终调用了 .dequeue()，这样下一个排队的函数才能执行
+			String.prototype.format = function() {
+				var args = arguments;
+				return this.replace(/\{(\d+?)\}/g, function(g0, g1) {
+					console.log(g0);
+					console.log(g1);
+					console.log(args);
+					return args[+g1];
+				});
+			};
+			var string = "hello {0},your age is {1},so {0}'s age is {1}";
+			string.format("yrx", "50");
+			
+			name = '"a", "b"';
+			name.replace(/"([^"]*)"/g, "{$1}");
+			name = 'aaa bbb ccc';
+			uw = name.replace(/\b\w+\b/g, function(word) {
+				return word.substring(0, 1).toUpperCase() + word.substring(1);
+			});
+			
+			$({
+				num: 1
+			}).animate({
+				num: 100
+			}, {
+				duration: 1000,
+				step: function() {
+					console.info("当前num是", this.num);
+				},
+				complete: function() {
+					console.info("结束了", this.num);
+				}
+			});
+			
+			jQuery.extend(jQuery.easing, {
+				easeOutBounce: function(x, t, b, c, d) {
+					if((t /= d) < (1 / 2.75)) {
+						return c * (7.5625 * t * t) + b;
+					} else if(t < (2 / 2.75)) {
+						return c * (7.5625 * (t -= (1.5 / 2.75)) * t + .75) + b;
+					} else if(t < (2.5 / 2.75)) {
+						return c * (7.5625 * (t -= (2.25 / 2.75)) * t + .9375) + b;
+					} else {
+						return c * (7.5625 * (t -= (2.625 / 2.75)) * t + .984375) + b;
+					}
+				},
+				easeOutCubic: function(x, t, b, c, d) {
+					return c * ((t = t / d - 1) * t * t + 1) + b;
+				}
+			})
+			
+			function sendBirld() {
+//				var ele = $("#birld").stop(true, false);
+				var ele = $("#birld");
+				ele.css({
+					"left": "0",
+					"top": "0",
+					"transform": "rotateZ(0deg)"
+				});
+				$({left: 0,top: 0,tran: 0}).animate({
+					left: 800,
+					top: 180,
+					tran: 360
+				}, {
+					duration: 2500,
+					specialEasing: {
+						left: 'easeOutCubic',
+						top: 'easeOutBounce'
+					},
+					step: function() {
+						ele.css({
+							"left": this.left + "px",
+							"top": this.top + "px",
+							"transform": "rotateZ(" + this.tran + "deg)"
+						});
+					},
+					complete: function() {
+						ele.css({
+							"left": "800px",
+							"top": "180px",
+							"transform": "rotateZ(360deg)"
+						});
+					}
+				});
+			}
+			sendBirld();
+		</script>
+	</body>
+</html>
