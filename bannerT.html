@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>banner-T</title>
+		<script src="js/jquery-2.2.4.min.js"></script>
+		<script src="js/bannerT.js"></script>
+		<style>
+			.banner-wrap{
+			    height: 900px;
+			    outline: 1px dash #eee;
+			    padding: 200px 0;
+			    perspective: 1000px;
+			    background: pink;
+			}
+			.banner{
+			    width: 500px;
+			    margin: 0 auto;
+			    box-sizing: border-box;
+			    background-color:  #37D7B2;
+			    text-align: center;
+			    line-height: 500px;
+			    font-size: 50px;
+			    color: #fff;
+			    transition:transform .3s ease;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="banner-wrap">
+    		<div class="banner">banner</div>
+    		<div class="banner">banner</div>
+    		<div class="banner">banner</div>
+		</div>
+		<script type="text/javascript">
+			$(".banner").bannerT({
+				deg:50
+			});
+		</script>
+	</body>
+</html>

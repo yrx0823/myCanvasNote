@@ -4,20 +4,134 @@
 		<meta charset="UTF-8">
 		<title>琴弦文字</title>
 		<script src="js/jquery-2.2.4.min.js"></script>
+		<script src="js/qin.js"></script>
+		<style>
+			p{
+				position:relative;
+				height:14px;
+				top: 100px;
+				left: 100px;
+				font-size: 20px;
+			}
+		</style>
 	</head>
 	<body>
-		<p>琴弦文字琴弦文字琴弦文字琴弦文字琴弦文字</p>
-		<p>琴弦文字琴弦文字琴弦文字琴弦文字琴弦文字</p>
+		<p>一二三四五六七八九十一二三四五六七八九十</p>
+		<p id="p1">个梵蒂冈梵蒂冈航空发动机和</p>
 		<script type="text/javascript">
+			
+			$("#p1").qin({
+				
+			})
+			
 			$(function(){
-				var $ele = $("p:first-child");console.log($ele);
+				$.extend($.easing, {
+			        easeOutElastic: function (x, t, b, c, d) {
+			            var s = 1.70158; var p = 0; var a = c;
+			            if (t == 0) return b; if ((t /= d) == 1) return b + c; if (!p) p = d * .3;
+			            if (a < Math.abs(c)) { a = c; var s = p / 4; }
+			            else var s = p / (2 * Math.PI) * Math.asin(c / a);
+			            return a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b;
+			        }
+			    });
+				var $ele = $("p:first");
+				var txt = $ele.html();
+				var opt = {
+					offset:30,//最大偏移量
+					duration:500,//持续时间
+					recline:.1//每像素偏移量
+				}
 				function fillSpan(){
-					var content = [
-						"<span>",[].join.call($ele.html(),"</span><span>"),"</span>"
-					]
-					console.log(content);
+					var content = "";
+//ie9
+//					var content = [
+//						"<span>",[].join.call(txt.html(),"</span><span>"),"</span>"
+//					].join("");
+
+//ie8
+//				for(var i=0; i< txt.length; i++)
+//					content += '<span>' + txt[i] + '</span>';  
+//					console.log(content);
+//				}
+
+//ie6
+
+					for(var i=0; i< txt.length; i++){
+						content += '<span>' + txt.substr(i,1) + '</span>';
+					}
+					$ele.html(content);
+					var positionArr = [];
+					//所有的文字加span并定位，
+					$ele.children('span').each(function(){
+						var $span = $(this);
+						var position = $span.position();
+						positionArr.push(position);
+						$span.css({
+							top:position.top + "px",
+							left:position.left + "px",
+						});
+						setTimeout(function(){
+							$span.css("position", "absolute");	
+						},0);
+					});
+					//记录数组所标
+					$ele.data("stringPos",positionArr);
+				}
+				//动画
+				function AniString($ele,opt){
+					var positionArr = $ele.data("stringPos");
+					var startX = 0;//初始化x坐标
+					var startY = 0;//初始化y坐标
+					$ele.on("mouseenter",function(e){
+						//元素在容器内的坐标
+						var offset = $ele.offset();
+						startX = e.pageX-offset.left;
+						startY = e.pageY-offset.top;
+					})
+					$ele.on("mousemove",function(e){
+						var offset = $ele.offset();
+						xPos = e.pageX - offset.left;//容器内x坐标
+						yPos = e.pageY - offset.top;//容器内x坐标
+						var offsetY = yPos - startY;
+						if(Math.abs(offsetY) > opt.offset){//如果超过最大偏移量
+							return;
+						}
+						var isDown = offsetY > 0;//是否向下
+						$ele.children("span").each(function(i){
+							var $span = $(this);
+							var position = positionArr[i];
+							console.log(xPos - position.left);
+							var reclineNum = Math.abs(xPos - position.left) * opt.recline; // Y 轴移动距离，基于原始位置
+                			reclineNum *= isDown ? 1 : (-1); // 基于向下为正方向
+                			
+							var resultY = position.top + offsetY - reclineNum;	
+                           
+                           //都在top值之上或之下
+							if (isDown && resultY < position.top) {
+			                    resultY = position.top;
+			                }
+			                else if (!isDown && resultY > position.top) {
+			                    resultY = position.top;
+			                }
+							
+							$span.css({
+								top:resultY + "px"
+							});
+						});
+					});
+					$ele.on("mouseleave",function(){
+						$ele.children("span").each(function(i){
+							$(this).stop(true,false).animate({
+								top:positionArr[i].top
+							},{
+								duration:opt.duration,
+								easing:'easeOutElastic'
+							});
+						});
+					});
 				}
 				fillSpan();
+				AniString($ele,opt);
 			});
 		</script>
 	</body>
